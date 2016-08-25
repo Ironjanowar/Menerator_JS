@@ -1,0 +1,11 @@
+# Token
+.env
+
+# Emacs stuff
+*~
+
+# Other files
+api_login.json
+
+# Js stuff
+node_modules/
