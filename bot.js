@@ -12,11 +12,11 @@ var bot = new TelegramBot(token, {polling : true});
 
 // ------------------------------------ Utils ---------------------------------------
 var request = require("./data/request.json");
-var memes_info = request["data"]["memes"];
+var memes_info = request.data.memes;
 var login = require("./data/api_login.json")
 var api_request = {
-    "username": login["username"],
-    "password": login["pass"]
+    "username": login.username,
+    "password": login.pass
 }
 
 // ------------------------------------ Handlers ------------------------------------
@@ -47,7 +47,7 @@ var sendRequest = function sendRequest(cid) {
 var saveTextoAbajo = function saveTextoAbajo(message) {
     var cid = message.chat.id;
     var text = message.text;
-    api_request["text1"] = text;
+    api_request.text1 = text;
     bot.sendMessage(cid, "Aquí esta tu nuevo meme!").then(sendRequest.bind(null, cid));
 }
 
@@ -61,10 +61,10 @@ var saveTextoArriba = function saveTextoArriba(message) {
     var cid = message.chat.id;
     var text = message.text;
     if(text == "/abajo") {
-        api_request["text0"] = ""
+        api_request.text0 = ""
         bot.sendMessage(cid, "En ese caso, escribe lo que quieras que aparezca solo abajo.", options).then(textoAbajo);
     } else {
-        api_request["text0"] = text;
+        api_request.text0 = text;
         bot.sendMessage(cid, "Bien! Ahora lo que quieres que aparezca abajo.", options).then(textoAbajo);
     }
 }
@@ -76,7 +76,7 @@ var textoArriba = function textoArriba(sended) {
 }
 
 var checkMemeName = function checkMemeName(idOrName, elem, index, arr) {
-    return elem["name"] == idOrName || elem["id"] == idOrName;
+    return elem.name == idOrName || elem.id == idOrName;
 }
 
 var checkMeme = function sendName(message) {
@@ -85,7 +85,7 @@ var checkMeme = function sendName(message) {
     var toSend = "Ese id o nombre no es válido.";
     if(memes_info.some(checkMemeName.bind(null, idOrName))) {
         var meme = memes_info.find(checkMemeName.bind(null, idOrName));
-        api_request["template_id"] = meme["id"];
+        api_request.template_id = meme.id;
         toSend = "Okkay! Mándame lo que quieres que aparezca en el texto de arriba.\nSi solo quieres texto de abajo escribe /abajo";
         bot.sendMessage(cid, toSend, options).then(textoArriba);
     } else {
@@ -105,10 +105,9 @@ bot.onText(/^\/newmeme$/, (message) => {
         .then(catchReply);
 });
 
-// Echo handler
-bot.onText(/^\/newmeme (.+)/, (message, match) => {
-    var toSend = "You said: " + match[1];
-    bot.sendMessage(message.chat.id, toSend);
+bot.onText(/^\/help$/, (message) => {
+    bot.sendMessage(message.chat.id, "This is help!") 
 });
 
+// Print bot already running
 bot.getMe().then(console.log("Running..."));
