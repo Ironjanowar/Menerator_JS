@@ -17,7 +17,8 @@
     "main": "bot.js",
     "dependencies": {
         "dotenv": "^2.0.0",
-        "node-telegram-bot-api": "0.23.3"
+        "node-telegram-bot-api": "0.23.3",
+        "elasticsearch": "*"
     },
     "scripts": {
         "start": "node bot.js"
